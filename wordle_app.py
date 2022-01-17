@@ -72,8 +72,8 @@ class GameStats(Widget):
         total_played = self.stats["played"]
         total_win = sum(self.stats["stats"])
         current_streak = (
-            len(self.stats["last_guesses"]) - 1
-            if self.stats["last_result"] is not None
+            len(self.stats["last_guesses"][0]) // 5 - 1
+            if self.stats["last_result"]
             else 0
         )
         max_streak = max(
@@ -183,7 +183,6 @@ class GuessView(GridView):
 
     def input_letter(self, letter: str) -> None:
         button = self.slots[self.current]
-        self.log(button.name, "INPUT")
         if button.name:
             if self.current % self.COLUMN_SIZE == self.COLUMN_SIZE - 1:
                 # The last letter is filled
@@ -224,7 +223,6 @@ class GuessView(GridView):
             if solution[i] == b.name:
                 counter[b.name] -= 1
                 b.status = CORRECT
-        self.log("HERE")
         for b in letters:
             if b.status == CORRECT:
                 continue
@@ -317,12 +315,13 @@ class WordleApp(App):
                 "".join("".join(str(l.status) for row in guesses for l in row)),
             ),
             "last_result": self.result,
-            "played": self.stats["played"],
+            "played": self.stats["played"] + 1,
             "stats": self.stats["stats"],
         }
-        with open(self.STATS_JSON, "w") as f:
-            json.dump(data, f)
+        self.stats.update(data)
         self.stats_view.refresh()
+        with open(self.STATS_JSON, "w") as f:
+            json.dump(data, f, indent=2)
 
     def show_result(self) -> None:
         if self.result:
@@ -352,10 +351,8 @@ class WordleApp(App):
         if self.index > self.stats.get("last_played", -1):
             self.stats["last_result"] = None
             return
-        self.log("HAHA", self.stats["last_guesses"])
         slots = self.guess.slots
         for i, (letter, status) in enumerate(zip(*self.stats["last_guesses"])):
-            self.log(letter, status)
             slots[i].name = slots[i].label = letter
             slots[i].status = int(status)
             self.buttons[letter].status = max(
