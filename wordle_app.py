@@ -217,7 +217,7 @@ class GuessView(GridView):
         for b in letters:
             if b.status == CORRECT:
                 continue
-            if counter.get(b.name, -1) < 0:
+            if counter.get(b.name, 0) <= 0:
                 b.status = ABSENT
             else:
                 counter[b.name] -= 1
