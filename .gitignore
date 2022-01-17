@@ -1,0 +1,6 @@
+/venv/
+/.pdm.toml
+/.vscode/
+__pycache__/
+*.log
+.stats.json
