@@ -26,12 +26,12 @@ pdm install
 pdm run start
 ```
 
-Otherwise, set up a new virtualenv and install the only dependency `textual`:
+Otherwise, set up a new virtualenv and install the dependencies:
 
 ```bash
 python3 -m venv venv
 . venv/bin/activate
-pip install textual
+pip install textual pyperclip
 # Run the application
 python wordle_app.py
 ```
@@ -56,7 +56,7 @@ Special Thanks to [@willmcgugan](https://github.com/willmcgugan) who created the
 
 ## Todo List
 
-- [ ] Share the result
+- [x] Share the result
 
 ## License
 

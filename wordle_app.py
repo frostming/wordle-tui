@@ -9,6 +9,7 @@ import os
 import string
 from typing import Counter, Iterable, Sequence, TypeVar
 
+import pyperclip
 from rich.align import Align
 from rich.bar import Bar
 from rich.console import Group, RenderableType
@@ -33,6 +34,7 @@ LETTER_STATUS = {
     PRESENT: "bold white on rgb(181,159,59)",
     CORRECT: "bold white on rgb(83,141,78)",
 }
+BLOCKS = {ABSENT: "⬛", PRESENT: "🟨", CORRECT: "🟩"}
 INITIAL_STATS = {"played": 0, "stats": [0, 0, 0, 0, 0, 0]}
 SEED_DATE = datetime.datetime.combine(datetime.datetime(2021, 6, 19), datetime.time())
 with open("La.gz", "rb") as laf, open("Ta.gz", "rb") as taf:
@@ -170,6 +172,15 @@ class GuessView(GridView):
     def current_word(self) -> list[str]:
         return [b.name for b in self.current_guess]
 
+    @property
+    def valid_guesses(self) -> list[Sequence[Letter]]:
+        return list(
+            partition(
+                itertools.takewhile(lambda x: bool(x.name), self.slots),
+                self.COLUMN_SIZE,
+            )
+        )
+
     def input_letter(self, letter: str) -> None:
         button = self.slots[self.current]
         self.log(button.name, "INPUT")
@@ -250,6 +261,8 @@ class WordleApp(App):
 
     def on_key(self, event: events.Key) -> None:
         if self.result is not None:
+            if event.key == "c":
+                self.copy_result()
             return
         self.message.content = ""
         if event.key in string.ascii_letters:
@@ -272,21 +285,28 @@ class WordleApp(App):
         for l in current:
             button = self.buttons[l.name]
             button.status = max(button.status or 0, l.status)
-        if self.result is True:
-            self.message.content = "You Win!"
-        elif self.result is False:
-            self.message.content = f"You Lose! The answer is:\n{self.solution}"
         if self.result is not None:
+            self.show_result()
             self.save_statistics()
-            self.message.show_eta(SEED_DATE + datetime.timedelta(days=self.index + 1))
+
+    def copy_result(self) -> None:
+        guesses = self.guess.valid_guesses
+        trials = len(guesses) if self.result else "x"
+        result = [f"Wordle {self.index} {trials}/6", ""]
+        for row in guesses:
+            result.append("".join(BLOCKS[l.status] for l in row))
+        text = "\n".join(result)
+        pyperclip.copy(text)
+        old_content = self.message.content
+        self.message.content = "Successfully copied to the clipboard."
+
+        def restore():
+            self.message.content = old_content
+
+        self.message.set_timer(2, restore)
 
     def save_statistics(self) -> None:
-        guesses = list(
-            partition(
-                itertools.takewhile(lambda x: bool(x.name), self.guess.slots),
-                self.guess.COLUMN_SIZE,
-            )
-        )
+        guesses = self.guess.valid_guesses
         self.stats["played"] += 1
         if self.result:
             self.stats["stats"][len(guesses) - 1] += 1
@@ -303,6 +323,15 @@ class WordleApp(App):
         with open(self.STATS_JSON, "w") as f:
             json.dump(data, f)
         self.stats_view.refresh()
+
+    def show_result(self) -> None:
+        if self.result:
+            content = "You Win!"
+        else:
+            content = f"You Lose! The answer is:\n{self.solution}"
+        content += "\nPress 'c' to copy the result."
+        self.message.content = content
+        self.message.show_eta(SEED_DATE + datetime.timedelta(days=self.index + 1))
 
     def handle_button_pressed(self, message: ButtonPressed) -> None:
         if self.result is not None:
@@ -333,11 +362,7 @@ class WordleApp(App):
                 self.buttons[letter].status or 0, int(status)
             )
         self.result = self.stats["last_result"]
-        if self.result is True:
-            self.message.content = "You Win!"
-        elif self.result is False:
-            self.message.content = f"You Lose! The answer is:\n{self.solution}"
-        self.message.show_eta(SEED_DATE + datetime.timedelta(days=self.index + 1))
+        self.show_result()
 
     async def on_mount(self) -> None:
         self.index = self.get_index()

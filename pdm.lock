@@ -16,6 +16,11 @@ requires_python = ">=3.5"
 summary = "Pygments is a syntax highlighting package written in Python."
 
 [[package]]
+name = "pyperclip"
+version = "1.8.2"
+summary = "A cross-platform clipboard module for Python. (Only handles plain text for now.)"
+
+[[package]]
 name = "rich"
 version = "11.0.0"
 requires_python = ">=3.6.2,<4.0.0"
@@ -44,7 +49,7 @@ summary = "Backported and Experimental Type Hints for Python 3.5+"
 
 [metadata]
 lock_version = "3.1"
-content_hash = "sha256:ec065a1ce32259aa87ba6755575f589c8abe350779c75aeeb579e471bb65815b"
+content_hash = "sha256:d3b438703af069a97af0ef54fe5558019ec4ab0c0bbd3c9f0ee346b24292e4b7"
 
 [metadata.files]
 "colorama 0.4.4" = [
@@ -58,6 +63,9 @@ content_hash = "sha256:ec065a1ce32259aa87ba6755575f589c8abe350779c75aeeb579e471b
 "pygments 2.11.2" = [
     {file = "Pygments-2.11.2-py3-none-any.whl", hash = "sha256:44238f1b60a76d78fc8ca0528ee429702aae011c265fe6a8dd8b63049ae41c65"},
     {file = "Pygments-2.11.2.tar.gz", hash = "sha256:4e426f72023d88d03b2fa258de560726ce890ff3b630f88c21cbb8b2503b8c6a"},
+]
+"pyperclip 1.8.2" = [
+    {file = "pyperclip-1.8.2.tar.gz", hash = "sha256:105254a8b04934f0bc84e9c24eb360a591aaf6535c9def5f29d92af107a9bf57"},
 ]
 "rich 11.0.0" = [
     {file = "rich-11.0.0-py3-none-any.whl", hash = "sha256:d7a8086aa1fa7e817e3bba544eee4fd82047ef59036313147759c11475f0dafd"},
