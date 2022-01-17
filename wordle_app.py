@@ -76,8 +76,8 @@ class GameStats(Widget):
             if self.stats["last_result"]
             else 0
         )
-        streaks = [i for i in range(len(self.stats["stats"])) if self.stats["stats"][i]]
-        max_streak = max(streaks) if streaks else 0
+        streaks = (i for i in range(len(self.stats["stats"])) if self.stats["stats"][i])
+        max_streak = max(streaks, default=0)
         data = {
             "Played": total_played,
             "Win %": round(total_win / total_played * 100, 1) if total_played else 0,
