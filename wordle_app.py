@@ -266,7 +266,7 @@ class WordleApp(App):
             self.message.content = "Not enough letters"
             return
         if current_word not in Ta and current_word not in La:
-            self.message.content = "The word doesn't exist"
+            self.message.content = "Not in word list"
             return
         self.result = self.guess.check_solution(self.solution)
         for l in current:
