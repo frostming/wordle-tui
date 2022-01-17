@@ -4,6 +4,11 @@ Play [WORDLE] game in your terminal.
 
 **The game will be kept the same as the Web version.**
 
+## Prerequisites
+
+- Python 3.7+
+- Linux/MacOS (Windows is not supported due to upstream limits).
+
 ## Quick Start
 
 Clone the repository
