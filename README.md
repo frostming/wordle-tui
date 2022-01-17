@@ -44,7 +44,7 @@ pip install "git+https://github.com/frostming/wordle-tui.git#egg=wordle-tui"
 - [Textual]
 
 [wordle]: https://www.powerlanguage.co.uk/wordle/
-[rich]: https://github.com/Textualize/rich)
+[rich]: https://github.com/Textualize/rich
 [textual]: https://github.com/Textualize/textual
 
 Special Thanks to [@willmcgugan](https://github.com/willmcgugan) who created the awesome tools.
