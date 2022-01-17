@@ -31,7 +31,7 @@ Otherwise, set up a new virtualenv and install the dependencies:
 ```bash
 python3 -m venv venv
 . venv/bin/activate
-pip install textual pyperclip
+pip install textual pyperclip platformdirs
 # Run the application
 python wordle_app.py
 ```

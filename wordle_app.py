@@ -5,10 +5,11 @@ import datetime
 import gzip
 import itertools
 import json
-import os
 import string
+from pathlib import Path
 from typing import Counter, Iterable, Sequence, TypeVar
 
+import platformdirs
 import pyperclip
 from rich.align import Align
 from rich.bar import Bar
@@ -24,6 +25,8 @@ from textual.widget import Widget
 from textual.widgets import Button, ButtonPressed, Header
 from textual.widgets._button import ButtonRenderable
 
+BASE_DIR = Path(__file__).parent
+
 IDLE = "bold white on rgb(130,130,130)"
 EMPTY = "bold on rgb(18,18,18)"
 ABSENT = 0
@@ -37,7 +40,11 @@ LETTER_STATUS = {
 BLOCKS = {ABSENT: "⬛", PRESENT: "🟨", CORRECT: "🟩"}
 INITIAL_STATS = {"played": 0, "stats": [0, 0, 0, 0, 0, 0]}
 SEED_DATE = datetime.datetime.combine(datetime.datetime(2021, 6, 19), datetime.time())
-with open("La.gz", "rb") as laf, open("Ta.gz", "rb") as taf:
+STATS_JSON = Path(platformdirs.user_data_dir("wordle")) / ".stats.json"
+STATS_JSON.parent.mkdir(exist_ok=True, parents=True)
+with BASE_DIR.joinpath("La.gz").open("rb") as laf, BASE_DIR.joinpath("Ta.gz").open(
+    "rb"
+) as taf:
     La: list[str] = json.loads(gzip.decompress(laf.read()))
     Ta: list[str] = json.loads(gzip.decompress(taf.read()))
 
@@ -254,7 +261,6 @@ class KeyboardRow(GridView):
 
 class WordleApp(App):
     KEYBOARD = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"]
-    STATS_JSON = ".stats.json"
 
     def on_key(self, event: events.Key) -> None:
         if self.result is not None:
@@ -319,14 +325,14 @@ class WordleApp(App):
         }
         self.stats.update(data)
         self.stats_view.refresh()
-        with open(self.STATS_JSON, "w") as f:
+        with open(STATS_JSON, "w") as f:
             json.dump(data, f, indent=2)
 
     def show_result(self) -> None:
         if self.result:
             content = "You Win!"
         else:
-            content = f"You Lose! The answer is:\n{self.solution}"
+            content = f"You are almost there! The answer is:\n{self.solution}"
         content += "\nPress 'c' to copy the result."
         self.message.content = content
         self.message.show_eta(SEED_DATE + datetime.timedelta(days=self.index + 1))
@@ -363,10 +369,11 @@ class WordleApp(App):
     async def on_mount(self) -> None:
         self.index = self.get_index()
         self.solution = La[self.index].upper()
-        if not os.path.exists(self.STATS_JSON):
+        self.log("Loading stats", STATS_JSON)
+        if not STATS_JSON.exists():
             self.stats = INITIAL_STATS.copy()
         else:
-            with open(self.STATS_JSON, "rb") as f:
+            with open(STATS_JSON, "rb") as f:
                 self.stats = json.load(f)
         self.result: bool | None = None
 

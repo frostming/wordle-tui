@@ -10,6 +10,12 @@ version = "0.9.1"
 summary = "Python parser for the CommonMark Markdown spec"
 
 [[package]]
+name = "platformdirs"
+version = "2.4.1"
+requires_python = ">=3.7"
+summary = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
+
+[[package]]
 name = "pygments"
 version = "2.11.2"
 requires_python = ">=3.5"
@@ -49,7 +55,7 @@ summary = "Backported and Experimental Type Hints for Python 3.5+"
 
 [metadata]
 lock_version = "3.1"
-content_hash = "sha256:d3b438703af069a97af0ef54fe5558019ec4ab0c0bbd3c9f0ee346b24292e4b7"
+content_hash = "sha256:b1432401191a6de1ccaa037df5921b32aa4d7b75e636fc401af28d70f96f296e"
 
 [metadata.files]
 "colorama 0.4.4" = [
@@ -59,6 +65,10 @@ content_hash = "sha256:d3b438703af069a97af0ef54fe5558019ec4ab0c0bbd3c9f0ee346b24
 "commonmark 0.9.1" = [
     {file = "commonmark-0.9.1-py2.py3-none-any.whl", hash = "sha256:da2f38c92590f83de410ba1a3cbceafbc74fee9def35f9251ba9a971d6d66fd9"},
     {file = "commonmark-0.9.1.tar.gz", hash = "sha256:452f9dc859be7f06631ddcb328b6919c67984aca654e5fefb3914d54691aed60"},
+]
+"platformdirs 2.4.1" = [
+    {file = "platformdirs-2.4.1-py3-none-any.whl", hash = "sha256:1d7385c7db91728b83efd0ca99a5afb296cab9d0ed8313a45ed8ba17967ecfca"},
+    {file = "platformdirs-2.4.1.tar.gz", hash = "sha256:440633ddfebcc36264232365d7840a970e75e1018d15b4327d11f91909045fda"},
 ]
 "pygments 2.11.2" = [
     {file = "Pygments-2.11.2-py3-none-any.whl", hash = "sha256:44238f1b60a76d78fc8ca0528ee429702aae011c265fe6a8dd8b63049ae41c65"},
