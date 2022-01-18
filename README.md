@@ -4,6 +4,8 @@ Play [WORDLE] game in your terminal.
 
 **The game will be kept the same as the Web version.**
 
+![image](https://user-images.githubusercontent.com/16336606/149886222-6434ef31-584f-43b2-917c-a76ecf5b6fc8.png)
+
 ## Prerequisites
 
 - Python 3.7+
@@ -40,6 +42,8 @@ Or, if you want to install this application:
 
 ```bash
 pip install "git+https://github.com/frostming/wordle-tui.git#egg=wordle-tui"
+# Run the application
+wordle
 ```
 
 ## Credits
