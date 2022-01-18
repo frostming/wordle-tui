@@ -8,7 +8,8 @@ dependencies = [
 ]
 requires-python = ">=3.7"
 
-[project.optional-dependencies]
+[project.scripts]
+wordle = "wordle_app:main"
 
 [build-system]
 requires = ["pdm-pep517"]

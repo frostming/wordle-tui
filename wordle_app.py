@@ -402,4 +402,9 @@ class WordleApp(App):
         await view.dock(subview, edge="right")
 
 
-WordleApp.run(title="WORDLE", log="textual.log")
+def main():
+    WordleApp.run(title="WORDLE", log="textual.log")
+
+
+if __name__ == "__main__":
+    main()
