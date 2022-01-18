@@ -38,7 +38,12 @@ LETTER_STATUS = {
     CORRECT: "bold white on rgb(83,141,78)",
 }
 BLOCKS = {ABSENT: "⬛", PRESENT: "🟨", CORRECT: "🟩"}
-INITIAL_STATS = {"played": 0, "stats": [0, 0, 0, 0, 0, 0]}
+INITIAL_STATS = {
+    "played": 0,
+    "stats": [0, 0, 0, 0, 0, 0],
+    "current_streak": 0,
+    "max_streak": 0,
+}
 SEED_DATE = datetime.datetime.combine(datetime.datetime(2021, 6, 19), datetime.time())
 STATS_JSON = Path(platformdirs.user_data_dir("wordle")) / ".stats.json"
 STATS_JSON.parent.mkdir(exist_ok=True, parents=True)
@@ -78,18 +83,12 @@ class GameStats(Widget):
     def render(self) -> RenderableType:
         total_played = self.stats["played"]
         total_win = sum(self.stats["stats"])
-        current_streak = (
-            len(self.stats["last_guesses"][0]) // 5 - 1
-            if self.stats["last_result"]
-            else 0
-        )
-        streaks = (i for i in range(len(self.stats["stats"])) if self.stats["stats"][i])
-        max_streak = max(streaks, default=0)
+        num_guesses = len(self.stats["last_guesses"][0]) // 5
         data = {
             "Played": total_played,
             "Win %": round(total_win / total_played * 100, 1) if total_played else 0,
-            "Current Streak": current_streak,
-            "Max Streak": max_streak,
+            "Current Streak": self.stats.get("current_streak", 0),
+            "Max Streak": self.stats.get("max_streak", 0),
         }
         table = Table(*data.keys())
         table.add_row(*map(str, data.values()))
@@ -102,7 +101,7 @@ class GameStats(Widget):
                     0,
                     value,
                     color="rgb(83,141,78)"
-                    if i == current_streak + 1 and self.stats["last_result"] is not None
+                    if i == num_guesses and self.stats["last_result"]
                     else "rgb(58,58,58)",
                 ),
             )
@@ -313,6 +312,11 @@ class WordleApp(App):
         self.stats["played"] += 1
         if self.result:
             self.stats["stats"][len(guesses) - 1] += 1
+        is_streak = (
+            "last_played" in self.stats and self.index - self.stats["last_played"] == 1
+        )
+        current_streak = self.stats.get("current_streak", 0) + 1 if is_streak else 1
+        max_streak = max(current_streak, self.stats.get("max_streak", 0))
         data = {
             "last_played": self.index,
             "last_guesses": (
@@ -322,6 +326,8 @@ class WordleApp(App):
             "last_result": self.result,
             "played": self.stats["played"] + 1,
             "stats": self.stats["stats"],
+            "current_streak": current_streak,
+            "max_streak": max_streak,
         }
         self.stats.update(data)
         self.stats_view.refresh()
