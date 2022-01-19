@@ -167,6 +167,7 @@ class GuessView(GridView):
     def __init__(self, layout: Layout = None, name: str | None = None) -> None:
         super().__init__(layout, name)
         self.slots = [Letter("") for _ in range(self.COLUMN_SIZE * self.ROW_SIZE)]
+        self.current = 0
 
     @property
     def current_guess(self) -> list[Letter]:
@@ -208,7 +209,6 @@ class GuessView(GridView):
         button.name = button.label = ""
 
     async def on_mount(self) -> None:
-        self.current = 0
         self.grid.set_align("center", "center")
         self.grid.set_gap(1, 1)
         self.grid.add_column("column", repeat=self.COLUMN_SIZE, size=7)
@@ -287,9 +287,9 @@ class WordleApp(App):
         for l in current:
             button = self.buttons[l.name]
             button.status = max(button.status or 0, l.status)
+        self.save_statistics()
         if self.result is not None:
             self.show_result()
-            self.save_statistics()
 
     def copy_result(self) -> None:
         guesses = self.guess.valid_guesses
@@ -309,13 +309,15 @@ class WordleApp(App):
 
     def save_statistics(self) -> None:
         guesses = self.guess.valid_guesses
-        self.stats["played"] += 1
         if self.result:
             self.stats["stats"][len(guesses) - 1] += 1
         is_streak = (
             "last_played" in self.stats and self.index - self.stats["last_played"] == 1
         )
-        current_streak = self.stats.get("current_streak", 0) + 1 if is_streak else 1
+        current_streak = self.stats.get("current_streak", 0) if is_streak else 0
+        if self.result is not None:
+            self.stats["played"] += 1
+            current_streak += 1
         max_streak = max(current_streak, self.stats.get("max_streak", 0))
         data = {
             "last_played": self.index,
@@ -370,7 +372,9 @@ class WordleApp(App):
                 self.buttons[letter].status or 0, int(status)
             )
         self.result = self.stats["last_result"]
-        self.show_result()
+        self.guess.current = i + 1
+        if self.result is not None:
+            self.show_result()
 
     async def on_mount(self) -> None:
         self.index = self.get_index()
