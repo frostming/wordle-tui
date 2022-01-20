@@ -83,7 +83,9 @@ class GameStats(Widget):
     def render(self) -> RenderableType:
         total_played = self.stats["played"]
         total_win = sum(self.stats["stats"])
-        num_guesses = len(self.stats["last_guesses"][0]) // 5
+        num_guesses = (
+            len(self.stats["last_guesses"][0]) // 5 if self.stats["last_result"] else 0
+        )
         data = {
             "Played": total_played,
             "Win %": round(total_win / total_played * 100, 1) if total_played else 0,
