@@ -13,6 +13,16 @@ Play [WORDLE] game in your terminal.
 
 ## Quick Start
 
+### Install as an application
+
+```bash
+pip3 install --user "https://github.com/frostming/wordle-tui/archive/main.zip"
+# Run the application
+wordle
+```
+
+### Clone the repo and run
+
 Clone the repository
 
 ```bash
@@ -36,14 +46,6 @@ python3 -m venv venv
 pip install textual pyperclip platformdirs
 # Run the application
 python wordle_app.py
-```
-
-Or, if you want to install this application:
-
-```bash
-pip install "git+https://github.com/frostming/wordle-tui.git#egg=wordle-tui"
-# Run the application
-wordle
 ```
 
 ## Credits
