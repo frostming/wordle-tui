@@ -40,7 +40,7 @@ dependencies = [
 
 [[package]]
 name = "textual"
-version = "0.1.14"
+version = "0.1.15"
 requires_python = ">=3.7,<4.0"
 summary = "Text User Interface using Rich"
 dependencies = [
@@ -81,9 +81,9 @@ content_hash = "sha256:b1432401191a6de1ccaa037df5921b32aa4d7b75e636fc401af28d70f
     {file = "rich-11.0.0-py3-none-any.whl", hash = "sha256:d7a8086aa1fa7e817e3bba544eee4fd82047ef59036313147759c11475f0dafd"},
     {file = "rich-11.0.0.tar.gz", hash = "sha256:c32a8340b21c75931f157466fefe81ae10b92c36a5ea34524dff3767238774a4"},
 ]
-"textual 0.1.14" = [
-    {file = "textual-0.1.14-py3-none-any.whl", hash = "sha256:69ef5db48e76e0853589bfae88a76038f70d37434129cf8869d5a61779654b4c"},
-    {file = "textual-0.1.14.tar.gz", hash = "sha256:1e6eae6f904b6c1210ea6e6d9d1f388ab6b9665117b1c72b9a63660ab71df31f"},
+"textual 0.1.15" = [
+    {file = "textual-0.1.15-py3-none-any.whl", hash = "sha256:b2e462b993556764d91f6d15dd1f893fc22bc0516d6ee5b6efa6aa697e792465"},
+    {file = "textual-0.1.15.tar.gz", hash = "sha256:61367cb7cf0dc0e68d3e41c54916d8170f57f50a4705bd407a9feb479873146e"},
 ]
 "typing-extensions 3.10.0.2" = [
     {file = "typing_extensions-3.10.0.2-py2-none-any.whl", hash = "sha256:d8226d10bc02a29bcc81df19a26e56a9647f8b0a6d4a83924139f4a8b01f17b7"},

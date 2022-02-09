@@ -9,7 +9,6 @@ Play [WORDLE] game in your terminal.
 ## Prerequisites
 
 - Python 3.7+
-- Linux/MacOS (Windows is not supported due to upstream limits).
 
 ## Quick Start
 
