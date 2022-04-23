@@ -397,7 +397,7 @@ class WordleApp(App):
         ]
         # add enter and backspace buttons
         keyboard_rows[-1].children.insert(0, Button("ENTER", "enter", style=IDLE))
-        keyboard_rows[-1].children.append(Button("⬅️", "backspace", style=IDLE))
+        keyboard_rows[-1].children.append(Button("⌫", "backspace", style=IDLE))
         view = await self.push_view(DockView())
         header = Header()
         self.message = GameMessage()
